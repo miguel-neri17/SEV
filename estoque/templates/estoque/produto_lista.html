@@ -1,0 +1,53 @@
+{% extends 'estoque/base.html' %}
+
+{% block title %}Produtos — SEV{% endblock %}
+
+{% block content %}
+  <div class="topline">
+    <h1>Produtos</h1>
+    <a class="btn" href="{% url 'produto_criar' %}">+ Novo produto</a>
+  </div>
+
+  <form class="search" method="get">
+    <input name="q" value="{{ busca }}" placeholder="Pesquisar produto">
+    <button type="submit">Pesquisar</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Categoria</th>
+        <th>Estoque</th>
+        <th>Preço venda</th>
+        <th>Status</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in produtos %}
+        <tr>
+          <td>{{ p.nome }}</td>
+          <td>{{ p.categoria }}</td>
+          <td>{{ p.quantidade_estoque }} / mín. {{ p.estoque_minimo }}</td>
+          <td>R$ {{ p.preco_venda|floatformat:2 }}</td>
+          <td>
+            {% if p.estoque_baixo %}
+              <span class="danger">Reposição</span>
+            {% else %}
+              <span class="ok">Normal</span>
+            {% endif %}
+          </td>
+          <td>
+            <a href="{% url 'produto_editar' p.pk %}">Editar</a> ·
+            <a href="{% url 'produto_excluir' p.pk %}">Excluir</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6">Nenhum produto cadastrado.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

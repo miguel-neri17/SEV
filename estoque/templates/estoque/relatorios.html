@@ -1,0 +1,85 @@
+{% extends 'estoque/base.html' %}
+
+{% block title %}Relatórios — SEV{% endblock %}
+
+{% block content %}
+  <h1>Relatórios e indicadores</h1>
+
+  <div class="cards">
+    <div class="card">
+      <b>Faturamento</b>
+      <strong>R$ {{ faturamento|floatformat:2 }}</strong>
+    </div>
+    <div class="card">
+      <b>Lucro estimado</b>
+      <strong>R$ {{ lucro|floatformat:2 }}</strong>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <section class="panel chart-panel">
+      <h2>Estoque e vendas por categoria</h2>
+      <div class="chart-box">
+        <canvas id="grafico-categorias"></canvas>
+      </div>
+    </section>
+    <section class="panel chart-panel">
+      <h2>Faturamento por categoria</h2>
+      <div class="chart-box">
+        <canvas id="grafico-faturamento-categoria"></canvas>
+      </div>
+    </section>
+  </div>
+
+  <div class="chart-grid">
+    <section class="panel chart-panel">
+      <h2>Faturamento por produto</h2>
+      <div class="chart-box">
+        <canvas id="grafico-faturamento"></canvas>
+      </div>
+    </section>
+    <section class="panel chart-panel">
+      <h2>Formas de pagamento</h2>
+      <div class="chart-box">
+        <canvas id="grafico-pagamentos"></canvas>
+      </div>
+    </section>
+  </div>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>Produtos mais vendidos</h2>
+      <ol>
+        {% for i in por_produto %}
+          <li>{{ i.produto__nome }} — {{ i.qtd }} unidades</li>
+        {% empty %}
+          <li>Sem dados.</li>
+        {% endfor %}
+      </ol>
+    </section>
+
+    <section class="panel">
+      <h2>Formas de pagamento</h2>
+      <ul>
+        {% for i in por_forma %}
+          <li>{{ i.forma_pagamento }} — {{ i.qtd }} vendas</li>
+        {% empty %}
+          <li>Sem dados.</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>Produtos para reposição</h2>
+    {% for p in baixo %}
+      <p>{{ p.nome }}: {{ p.quantidade_estoque }} em estoque (mínimo {{ p.estoque_minimo }})</p>
+    {% empty %}
+      <p>Nenhum.</p>
+    {% endfor %}
+  </section>
+{% endblock %}
+
+{% block dados %}
+  {{ dados_graficos|json_script:"dados-graficos" }}
+{% endblock %}

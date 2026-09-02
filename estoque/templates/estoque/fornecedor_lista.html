@@ -1,0 +1,42 @@
+{% extends 'estoque/base.html' %}
+
+{% block title %}Fornecedores — SEV{% endblock %}
+
+{% block content %}
+  <div class="topline">
+    <h1>Fornecedores</h1>
+    <a class="btn" href="{% url 'fornecedor_criar' %}">+ Novo fornecedor</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Telefone</th>
+        <th>E-mail</th>
+        <th>CNPJ</th>
+        <th>Especialidade</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for f in fornecedores %}
+        <tr>
+          <td>{{ f.nome }}</td>
+          <td>{{ f.telefone|default:'-' }}</td>
+          <td>{{ f.email|default:'-' }}</td>
+          <td>{{ f.cnpj|default:'-' }}</td>
+          <td>{{ f.especialidade|default:'-' }}</td>
+          <td>
+            <a href="{% url 'fornecedor_editar' f.pk %}">Editar</a> |
+            <a href="{% url 'fornecedor_excluir' f.pk %}">Excluir</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6">Nenhum fornecedor cadastrado.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

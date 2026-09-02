@@ -1,0 +1,78 @@
+{% extends 'estoque/base.html' %}
+
+{% block title %}Dashboard — SEV{% endblock %}
+
+{% block content %}
+  <section class="hero">
+    <h1>Sistema Inteligente de Controle de Estoque e Análise de Vendas</h1>
+    <p>Gestão simples para pequenos comércios.</p>
+  </section>
+
+  <div class="cards">
+    <div class="card">
+      <b>Produtos</b>
+      <strong>{{ total_produtos }}</strong>
+    </div>
+    <div class="card">
+      <b>Itens em estoque</b>
+      <strong>{{ total_estoque }}</strong>
+    </div>
+    <div class="card">
+      <b>Vendas</b>
+      <strong>{{ total_vendas }}</strong>
+    </div>
+    <div class="card">
+      <b>Faturamento</b>
+      <strong>R$ {{ faturamento|floatformat:2 }}</strong>
+    </div>
+    <div class="card">
+      <b>Lucro estimado</b>
+      <strong>R$ {{ lucro|floatformat:2 }}</strong>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <section class="panel chart-panel">
+      <h2>Estoque e vendas por categoria</h2>
+      <div class="chart-box">
+        <canvas id="grafico-categorias"></canvas>
+      </div>
+    </section>
+    <section class="panel chart-panel">
+      <h2>Faturamento por produto</h2>
+      <div class="chart-box">
+        <canvas id="grafico-faturamento"></canvas>
+      </div>
+    </section>
+  </div>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>Alerta de estoque</h2>
+      {% if baixo_estoque %}
+        <ul>
+          {% for p in baixo_estoque %}
+            <li>{{ p.nome }} — {{ p.quantidade_estoque }} (mínimo {{ p.estoque_minimo }})</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>Nenhum produto em nível crítico.</p>
+      {% endif %}
+    </section>
+
+    <section class="panel">
+      <h2>Mais vendidos</h2>
+      <ol>
+        {% for item in mais_vendidos %}
+          <li>{{ item.produto__nome }} — {{ item.total }} unidades</li>
+        {% empty %}
+          <li>Ainda não há vendas.</li>
+        {% endfor %}
+      </ol>
+    </section>
+  </div>
+{% endblock %}
+
+{% block dados %}
+  {{ dados_graficos|json_script:"dados-graficos" }}
+{% endblock %}

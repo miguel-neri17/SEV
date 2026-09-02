@@ -1,0 +1,42 @@
+{% extends 'estoque/base.html' %}
+
+{% block title %}Entrar — SEV{% endblock %}
+
+{% block content %}
+  <div class="login-wrap">
+    <section class="login-panel">
+      <div class="login-marca">SEV</div>
+      <h1>Acesso ao sistema</h1>
+      <p class="login-sub">
+        Sistema Inteligente de Controle de Estoque e Análise de Vendas.
+        Informe seu usuário e senha para consultar os dados.
+      </p>
+
+      {% if form.errors %}
+        <div class="alert error">Usuário ou senha incorretos. Tente novamente.</div>
+      {% endif %}
+
+      {% if next and not form.errors %}
+        <div class="alert warning">É necessário entrar para acessar essa página.</div>
+      {% endif %}
+
+      <form method="post" class="form login-form">
+        {% csrf_token %}
+        <p>
+          <label for="{{ form.username.id_for_label }}">Usuário</label>
+          {{ form.username }}
+        </p>
+        <p>
+          <label for="{{ form.password.id_for_label }}">Senha</label>
+          {{ form.password }}
+        </p>
+        <input type="hidden" name="next" value="{{ next }}">
+        <button class="btn btn-bloco" type="submit">Entrar</button>
+      </form>
+
+      <p class="login-alternativa">
+        <a href="{% url 'registrar' %}">Não tenho uma conta</a>
+      </p>
+    </section>
+  </div>
+{% endblock %}

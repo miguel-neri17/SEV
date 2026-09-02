@@ -1,0 +1,36 @@
+# ===== Ambiente virtual =====
+venv/
+.venv/
+env/
+ENV/
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.Python
+
+# ===== Django =====
+db.sqlite3
+db.sqlite3-journal
+*.log
+staticfiles/
+staticfiles_build/
+media/
+local_settings.py
+
+# ===== Variáveis de ambiente / credenciais =====
+.env
+.env.local
+*.pem
+
+# ===== Editores =====
+.vscode/
+.idea/
+*.swp
+
+# ===== Sistema operacional =====
+Thumbs.db
+desktop.ini
+.DS_Store 

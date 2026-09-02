@@ -1,0 +1,41 @@
+{% extends 'estoque/base.html' %}
+
+{% block title %}Criar conta — SEV{% endblock %}
+
+{% block content %}
+  <div class="login-wrap">
+    <section class="login-panel">
+      <div class="login-marca">SEV</div>
+      <h1>Criar uma conta</h1>
+      <p class="login-sub">
+        Escolha um usuário e uma senha. A conta é adicionada à lista de
+        usuários do sistema, junto com as que já existem.
+      </p>
+
+      {% if form.non_field_errors %}
+        <div class="alert error">{{ form.non_field_errors|first }}</div>
+      {% endif %}
+
+      <form method="post" class="form login-form">
+        {% csrf_token %}
+        {% for campo in form %}
+          <p>
+            <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+            {{ campo }}
+            {% if campo.help_text %}
+              <small class="campo-ajuda">{{ campo.help_text }}</small>
+            {% endif %}
+            {% for erro in campo.errors %}
+              <small class="campo-erro">{{ erro }}</small>
+            {% endfor %}
+          </p>
+        {% endfor %}
+        <button class="btn btn-bloco" type="submit">Criar conta</button>
+      </form>
+
+      <p class="login-alternativa">
+        Já tem uma conta? <a href="{% url 'login' %}">Entrar</a>
+      </p>
+    </section>
+  </div>
+{% endblock %}
